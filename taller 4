@@ -65,26 +65,6 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             }
             else{
                 Nodo actual = raiz;
-/*                 while(agregado == false && actual != null){
-                    if(((elem).compareTo(actual.valor) > 0) && (actual.der == null) && agregado == false){
-                        actual.der = new Nodo(elem);
-                        actual.der.padre = actual;
-                        agregado = true;
-                    }
-                    if(((actual.valor).compareTo(elem) > 0) && (actual.izq == null) && agregado == false){
-                        actual.izq = new Nodo(elem);
-                        actual.izq.padre = actual;
-                        agregado = true;
-                    }
-                    boolean movio_derecha = false;
-                    if ((elem).compareTo(actual.valor) > 0 && agregado == false){
-                        actual = actual.der;
-                        movio_derecha = true;
-                    }
-                    if ((actual.valor).compareTo(elem) > 0 && agregado == false && movio_derecha == false) {
-                        actual = actual.izq;
-                    }
-                } */
                  while(actual != null && terminar == false && agregado == false){
                     boolean derecha = false;
                     //el elemento es mayor que actual y su hijo derecho es vacio
@@ -139,16 +119,14 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     public void eliminar(T elem){
-    //caso cuando solo tiene un elemento
+
     if (raiz.der == null && raiz.izq == null && raiz.valor == elem){
         raiz = null;
     }else{
-    //caso general
         if (pertenece(elem)){
             
             Nodo actual = raiz;
     
-            // recorro el arbol hasta llegar a que elem = actual.valor
             while (actual.valor.equals(elem) == false){
                 if ((elem).compareTo(actual.valor) > 0){
                     actual = actual.der;
@@ -157,15 +135,11 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                     actual = actual.izq;
                 }
             }
-            //caso tiene un solo hijo menor
             if (actual.izq != null && actual.der == null){
-            //veo caso particular donde quiero borrar la raiz luego
                 if (actual != raiz){
                     actual.izq.padre = actual.padre;
-                    //caso el valor del hijo es mayor al de actual.padre
                     if((actual.izq.valor).compareTo(actual.padre.valor) > 0){
                         actual.padre.der = actual.izq;
-                    //caso contrario
                     }else{
                         actual.padre.izq = actual.izq;
                     }
@@ -174,15 +148,11 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                     raiz.padre = null;
                 }
             }
-            //caso solo tiene un hijo mayor
             if (actual.izq == null && actual.der != null){
-            //veo caso particular donde quiero borrar la raiz abajo
                 if (actual != raiz){
                     actual.der.padre = actual.padre;
-                    //caso el valor del hijo es mayor al de actual.padre
                     if((actual.der.valor).compareTo(actual.padre.valor) > 0){ 
                         actual.padre.der = actual.der;                         
-                    //caso contrario
                     }else{
                         actual.padre.izq = actual.der;
                     }
@@ -191,41 +161,24 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                     raiz.padre = null;
                 }   
             }
-            //caso tiene dos hijos
             if (actual.der != null && actual.izq != null){
-                //creo su sucesor
                 Nodo sucesor = sucesor(actual);
-                //debo ver dos casos, si su sucesor es actual.der directamente o no
-                //caso donde actual.der no es sucesor de actual
                 T val = sucesor.valor;
                 eliminar(val);
+                cardinal++;
                 actual.valor = val;
-                /*if(sucesor != actual.der){
-                    actual.valor = sucesor.valor;
-                //caso donde actual.der es sucesor de actual
-                //sabemos que actual.der no tiene hijo izquierdo o menor
-                }else{
-                    actual.valor = sucesor.valor;
-                    actual.der = sucesor.der;
-                }
-                //corto la conexion con sucesor
-                if (sucesor.padre.der != null && sucesor.padre.der.valor == sucesor.valor){
-                    sucesor.padre.der = null;
-                }
-                if(sucesor.padre.der != null && sucesor.padre.izq.valor == sucesor.valor){
-                    sucesor.padre.izq = null;
-                }
-                //defino nulo a sucesor
-                sucesor = null;*/
             }
-            //caso no tiene hijos
             if (actual.der == null && actual.izq == null){
-                //veo si es hijo izquierdo
-                if(actual.padre.izq == actual){
-                    actual.padre.izq = null;
+                if(actual == raiz){
+                    raiz = null;
                 }
-                if(actual.padre.der == actual){
-                    actual.padre.der = null;
+                else{
+                    if(actual.padre.izq == actual){
+                        actual.padre.izq = null;
+                    }
+                    if(actual.padre.der == actual){
+                        actual.padre.der = null;
+                    }
                 }
             }
         cardinal --;
