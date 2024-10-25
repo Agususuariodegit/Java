@@ -171,6 +171,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                     }
                 }else{
                     raiz = actual.izq;
+                    raiz.padre = null;
                 }
             }
             //caso solo tiene un hijo mayor
@@ -187,6 +188,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                     }
                 }else{
                     raiz = actual.der;
+                    raiz.padre = null;
                 }   
             }
             //caso tiene dos hijos
@@ -195,7 +197,10 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                 Nodo sucesor = sucesor(actual);
                 //debo ver dos casos, si su sucesor es actual.der directamente o no
                 //caso donde actual.der no es sucesor de actual
-                if(sucesor != actual.der){
+                T val = sucesor.valor;
+                eliminar(val);
+                actual.valor = val;
+                /*if(sucesor != actual.der){
                     actual.valor = sucesor.valor;
                 //caso donde actual.der es sucesor de actual
                 //sabemos que actual.der no tiene hijo izquierdo o menor
@@ -211,15 +216,15 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                     sucesor.padre.izq = null;
                 }
                 //defino nulo a sucesor
-                sucesor = null;
+                sucesor = null;*/
             }
             //caso no tiene hijos
             if (actual.der == null && actual.izq == null){
                 //veo si es hijo izquierdo
-                if(actual.padre.izq.valor == actual.valor){
+                if(actual.padre.izq == actual){
                     actual.padre.izq = null;
                 }
-                if(actual.padre.der.valor == actual.valor){
+                if(actual.padre.der == actual){
                     actual.padre.der = null;
                 }
             }
